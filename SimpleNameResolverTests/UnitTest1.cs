@@ -68,22 +68,5 @@ namespace SimpleNameResolverTests
             Assert.IsTrue( msgBytes.SequenceEqual( converted ) );
         }
 
-        [TestMethod]
-        public void ReadCStringTest() {
-            string testStr = "123141231231\0";
-            byte[] testStrAsBytes = Encoding.ASCII.GetBytes(testStr);
-            int pos = 0;
-
-            var readStr = DnsMessageParser.ReadCString( testStrAsBytes, ref pos );
-
-            MemoryStream ms = new MemoryStream(16);
-            DnsMessageParser.WriteCString(ms, readStr);
-
-            var writtenStr = Encoding.ASCII.GetString( ms.ToArray() );
-
-            Assert.IsTrue( writtenStr == readStr, $"{writtenStr} != {readStr}" );
-        }
-
-
     }
 }

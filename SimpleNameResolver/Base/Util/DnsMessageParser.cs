@@ -55,18 +55,8 @@ namespace SimpleNameResolver.Base.Util
             return labels;
         }
 
-        public static string ReadCString( byte[] buf, ref int start ) {
-            int pos = start;
-            for ( ; buf[pos] != '\0'; pos++ ) ;
-            int bytesToCopy = pos - start + 1;
-            byte[] res = new byte[bytesToCopy];
-            Buffer.BlockCopy( buf, start, res, 0, bytesToCopy );
-            start += bytesToCopy;
-            return Encoding.ASCII.GetString( res );
-        }
-
         private static int ReadInt( byte[] buf, ref int start ) {
-            int val = ((((buf[start] << 32) | buf[start + 1] << 24) | buf[start + 2] << 16) | buf[start + 3]); //???
+            int val = ((((buf[start] << 32) | buf[start + 1] << 24) | buf[start + 2] << 16) | buf[start + 3]);
             start += 4;
             return val;
         }
@@ -118,7 +108,7 @@ namespace SimpleNameResolver.Base.Util
         }
 
         private static int ReadDomainNameOffset( byte[] buf, ref int start ) {
-            int offset = ((byte)(buf[start] & 0x3f) << 8) | buf[start + 1];// till better times
+            int offset = ((byte)(buf[start] & 0x3f) << 8) | buf[start + 1];
             start += 2;
             return offset;
         }
@@ -174,10 +164,6 @@ namespace SimpleNameResolver.Base.Util
             }
 
             ms.WriteByte( (byte)'\0' );
-        }
-
-        public static void WriteCString( MemoryStream ms, string str) {
-            ms.Write( Encoding.ASCII.GetBytes( str ), 0, str.Length );
         }
 
         private static void WriteRr( MemoryStream ms, DnsResourceRecord rr ) {
